@@ -12,8 +12,12 @@ const TodoListPage = () => {
     const refreshTodos = () => {
         axios.get('/api/todos')
             .then(function (response) {
+                const quotes = response.data;
+
+                quotes.sort((a, b) => a.position > b.position )
+
                 setState({
-                    quotes: response.data
+                    quotes: quotes
                 });
             });
     };
@@ -23,22 +27,21 @@ const TodoListPage = () => {
             <h2 className="mb-4">SW Research TODO list</h2>
                 <CreateTodoButton refreshHandler={refreshTodos}/>
                 <div>
-                    <TodoList quotes={state.quotes}/>
+                    <TodoList quotes={state.quotes} refreshHandler={refreshTodos}/>
                 </div>
         </div>
     );
 };
 
 const CreateTodoButton = ({refreshHandler}) => {
-    const [value, setValue] = useState("");
+    const [state, setState] = useState({name: ''});
 
     const handleSubmit = e => {
         e.preventDefault();
-        if (!value) return;
+        if (!state.name) return;
 
         axios.post('/api/todo', {
-            name: value,
-            position: 0
+            name: state.name,
         })
             .then(function (response) {
                 refreshHandler();
@@ -49,7 +52,9 @@ const CreateTodoButton = ({refreshHandler}) => {
                 console.log('error', error);
             })
             .then(function () {
-                setValue("");
+                setState({
+                    name: '',
+                });
             });
     }
 
@@ -69,7 +74,7 @@ const CreateTodoButton = ({refreshHandler}) => {
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
                                     <label htmlFor="todoNameHtml" className="form-label">Name</label>
-                                    <input onChange={e => setValue(e.target.value)} value={value} type="text" className="form-control" id="todoNameHtml" aria-describedby="nameHelp" placeholder="Add a new task" />
+                                    <input onChange={e => setState({name: e.target.value})} value={state.name} type="text" className="form-control" id="todoNameHtml" aria-describedby="nameHelp" placeholder="Add a new task" />
                                     <div id="nameHelp" className="form-text">Type TODO name</div>
                                 </div>
                                 <button type="submit" className="btn btn-success">Add</button>

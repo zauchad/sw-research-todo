@@ -1,0 +1,9 @@
+<?php
+
+declare(strict_types=1);
+
+namespace SwResearch\Infrastructure\Exception;
+
+use Exception;
+
+class InfrastructureException extends Exception {}

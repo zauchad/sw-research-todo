@@ -12,4 +12,10 @@ interface TodoQueryInterface
      * @return Todo[]
      */
     public function getAll() : array;
+
+    public function getLastPosition() : int;
+
+    public function getById(string $id) : Todo;
+
+    public function getByPosition(int $position) : Todo;
 }

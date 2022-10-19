@@ -6,8 +6,10 @@ namespace SwResearch\Infrastructure\Database\Orm;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Ramsey\Uuid\UuidInterface;
 use SwResearch\Domain\Todo;
 use SwResearch\Domain\TodoInterface;
+use SwResearch\Infrastructure\Exception\InfrastructureRuntimeException;
 
 class TodoOrm implements TodoInterface
 {
@@ -18,8 +20,20 @@ class TodoOrm implements TodoInterface
         $this->entityManager->persist($todo);
     }
 
-    public function remove(Todo $todo): void
+    public function getById(UuidInterface $id): Todo
     {
+        $item = $this->getRepository()->find($id);
+
+        if ($item === null) {
+            throw new InfrastructureRuntimeException(sprintf('Todo not found by id %s', $id));
+        }
+
+        return $item;
+    }
+
+    public function remove(UuidInterface $id): void
+    {
+        $todo = $this->getRepository()->find($id);
         $this->entityManager->remove($todo);
     }
 

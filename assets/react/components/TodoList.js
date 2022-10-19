@@ -1,16 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {Todo} from "./Todo";
+import axios from "axios";
 
-const reorder = (list, startIndex, endIndex) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-
-    return result;
-};
-
-function TodoList({quotes}) {
+function TodoList({quotes, refreshHandler}) {
     function onDragEnd(result) {
         console.log(
             result.source.index,
@@ -25,11 +18,21 @@ function TodoList({quotes}) {
             return;
         }
 
-        // const quotes = reorder(
-        //     state.quotes,
-        //     result.source.index,
-        //     result.destination.index
-        // );
+        axios.put('/api/todo/position', {
+            id: result.draggableId,
+            position: result.destination.index,
+        })
+            .then(function (response) {
+                refreshHandler();
+                console.log('success', response);
+            })
+            .catch(function (error) {
+                // handle error
+                console.log('error', error);
+            })
+            .then(function () {
+
+            });
     }
 
     return (
@@ -42,8 +45,10 @@ function TodoList({quotes}) {
                                 <Draggable draggableId={quote.id} index={index} key={quote.id}>
                                     {provided => (
                                         <Todo
+                                            id={quote.id}
                                             name={quote.name}
                                             innerRef={provided.innerRef}
+                                            refreshHandler={refreshHandler}
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}
                                         />

@@ -30,12 +30,61 @@ class DbalTodoQuery implements TodoQueryInterface
         );
     }
 
+    public function getLastPosition(): int
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+
+        $queryBuilder
+            ->select('MAX(position)')
+            ->from('todos', 't');
+
+        $result = $this->connection->fetchOne(
+            $queryBuilder->getSQL(),
+            $queryBuilder->getParameters(),
+            $queryBuilder->getParameterTypes()
+        );
+
+        return $result ?: 0;
+    }
+
+    public function getById(string $id): Todo
+    {
+        $queryBuilder = $this->getHydratedQueryBuilder()
+            ->andWhere('t.id = :id')
+            ->setParameter('id', $id);
+
+        $result = $this->connection->fetchAssociative(
+            $queryBuilder->getSQL(),
+            $queryBuilder->getParameters(),
+            $queryBuilder->getParameterTypes()
+        );
+
+        return $this->hydrate($result);
+    }
+
+    public function getByPosition(int $position): Todo
+    {
+        $queryBuilder = $this->getHydratedQueryBuilder()
+            ->andWhere('t.position = :position')
+            ->setParameter('position', $position);
+
+        $result = $this->connection->fetchAssociative(
+            $queryBuilder->getSQL(),
+            $queryBuilder->getParameters(),
+            $queryBuilder->getParameterTypes()
+        );
+
+        return $this->hydrate($result);
+    }
+
     private function getHydratedQueryBuilder() : QueryBuilder {
         $queryBuilder = $this->connection->createQueryBuilder();
 
         $queryBuilder
             ->select('*')
-            ->from('todos', 't');
+            ->from('todos', 't')
+            ->orderBy('position', 'ASC');
+
         return $queryBuilder;
     }
 
