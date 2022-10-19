@@ -6,7 +6,6 @@ namespace SwResearch\Infrastructure\Database\Orm;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Ramsey\Uuid\UuidInterface;
 use SwResearch\Domain\Todo;
 use SwResearch\Domain\TodoInterface;
 

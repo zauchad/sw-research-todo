@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {Todo} from "./Todo";
-import axios from "axios";
-
-const initial = Array.from({ length: 10 }, (v, k) => k).map(k => {
-    return {
-        id: `id-${k}`,
-        content: `Quote ${k}`
-    };
-});
 
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -18,27 +10,7 @@ const reorder = (list, startIndex, endIndex) => {
     return result;
 };
 
-function TodoList() {
-    const [state, setState] = useState({ quotes: initial });
-
-    useEffect(() => {
-        console.log('TodoList did mount/updated');
-
-        axios.get('/api/todos')
-            .then(function (response) {
-                // handle success
-                console.log('success', response);
-            })
-            .catch(function (error) {
-                // handle error
-                console.log('error', error);
-            })
-            .then(function () {
-                // always executed
-                console.log('then always executed');
-            });
-    });
-
+function TodoList({quotes}) {
     function onDragEnd(result) {
         console.log(
             result.source.index,
@@ -53,13 +25,11 @@ function TodoList() {
             return;
         }
 
-        const quotes = reorder(
-            state.quotes,
-            result.source.index,
-            result.destination.index
-        );
-
-        setState({ quotes });
+        // const quotes = reorder(
+        //     state.quotes,
+        //     result.source.index,
+        //     result.destination.index
+        // );
     }
 
     return (
@@ -68,16 +38,15 @@ function TodoList() {
                 {provided => (
                     <div ref={provided.innerRef} {...provided.droppableProps}>
                         {
-                            state.quotes.map((quote, index) => (
+                            quotes.map((quote, index) => (
                                 <Draggable draggableId={quote.id} index={index} key={quote.id}>
                                     {provided => (
                                         <Todo
+                                            name={quote.name}
                                             innerRef={provided.innerRef}
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}
-                                        >
-                                            {quote.content}
-                                        </Todo>
+                                        />
                                     )}
                                 </Draggable>
                             ))

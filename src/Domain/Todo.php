@@ -42,6 +42,16 @@ class Todo
         return $this->id;
     }
 
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    public function position(): int
+    {
+        return $this->position;
+    }
+
     public function createdAt(): DateTimeImmutable
     {
         return $this->createdAt;
