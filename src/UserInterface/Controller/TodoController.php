@@ -10,8 +10,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TodoController extends AbstractController
 {
-    #[Route('/', name: 'home', methods: ['GET'])]
-    public function homeHtml() : Response
+    #[Route('/', name: 'list', methods: ['GET'])]
+    public function listHtml() : Response
     {
         return $this->render('list.html.twig');
     }
