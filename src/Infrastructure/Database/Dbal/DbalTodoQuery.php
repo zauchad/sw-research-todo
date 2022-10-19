@@ -44,7 +44,7 @@ class DbalTodoQuery implements TodoQueryInterface
             $queryBuilder->getParameterTypes()
         );
 
-        return $result ?: 0;
+        return $result ?? -1;
     }
 
     public function getById(string $id): Todo
@@ -73,6 +73,8 @@ class DbalTodoQuery implements TodoQueryInterface
             $queryBuilder->getParameters(),
             $queryBuilder->getParameterTypes()
         );
+
+        dd($position, $result);
 
         return $this->hydrate($result);
     }

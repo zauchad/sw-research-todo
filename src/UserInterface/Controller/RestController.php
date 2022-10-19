@@ -10,6 +10,7 @@ use SwResearch\Application\Command\RemoveTodoCommand;
 use SwResearch\Application\Command\UpdateTodoNameCommand;
 use SwResearch\Application\Command\UpdateTodoPositionCommand;
 use SwResearch\Application\Query\TodoQueryInterface;
+use SwResearch\Domain\Exception\DomainInvalidAssertionException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,14 +40,24 @@ class RestController extends AbstractController
         $payload = json_decode($request->getContent(), true);
         $todoQuery->getLastPosition();
 
-        $messageBus
-            ->dispatch(
-                new CreateTodoCommand(
-                    Uuid::uuid4()->toString(),
-                    $payload['name'],
-                    $todoQuery->getLastPosition() + 1
-                )
+        try {
+            $messageBus
+                ->dispatch(
+                    new CreateTodoCommand(
+                        Uuid::uuid4()->toString(),
+                        $payload['name'],
+                        $todoQuery->getLastPosition() + 1
+                    )
+                );
+        } catch (DomainInvalidAssertionException $e) {
+            return $this->json(
+                [
+                    'error' => $e->getMessage()
+                ],
+                400,
+                ["Content-Type" => "application/json"]
             );
+        }
 
 
         return $this->json(
@@ -60,29 +71,26 @@ class RestController extends AbstractController
     function updateTodoPosition(
         Request $request,
         MessageBusInterface $messageBus,
-        TodoQueryInterface $todoQuery
     ): Response {
         $payload = json_decode($request->getContent(), true);
 
-        $firstTodo = $todoQuery->getById($payload['id']);
-        $secondTodo = $todoQuery->getByPosition($payload['position']);
-
-        $messageBus
-            ->dispatch(
-                new UpdateTodoPositionCommand(
-                    $secondTodo->id(),
-                    $firstTodo->position(),
-                )
+        try {
+            $messageBus
+                ->dispatch(
+                    new UpdateTodoPositionCommand(
+                        $payload['id'],
+                        $payload['position'],
+                    )
+                );
+        } catch (DomainInvalidAssertionException $e) {
+            return $this->json(
+                [
+                    'error' => $e->getMessage()
+                ],
+                400,
+                ["Content-Type" => "application/json"]
             );
-
-        $messageBus
-            ->dispatch(
-                new UpdateTodoPositionCommand(
-                    $firstTodo->id(),
-                    $secondTodo->position(),
-                )
-            );
-
+        }
 
         return $this->json(
             [],
@@ -98,14 +106,23 @@ class RestController extends AbstractController
     ): Response {
         $payload = json_decode($request->getContent(), true);
 
-        $messageBus
-            ->dispatch(
-                new UpdateTodoNameCommand(
-                    $payload['id'],
-                    $payload['name'],
-                )
+        try {
+            $messageBus
+                ->dispatch(
+                    new UpdateTodoNameCommand(
+                        $payload['id'],
+                        $payload['name'],
+                    )
+                );
+        } catch (DomainInvalidAssertionException $e) {
+            return $this->json(
+                [
+                    'error' => $e->getMessage()
+                ],
+                400,
+                ["Content-Type" => "application/json"]
             );
-
+        }
 
         return $this->json(
             [],
@@ -119,13 +136,22 @@ class RestController extends AbstractController
         string $id,
         MessageBusInterface $messageBus,
     ): Response {
-        $messageBus
-            ->dispatch(
-                new RemoveTodoCommand(
-                    $id
-                )
+        try {
+            $messageBus
+                ->dispatch(
+                    new RemoveTodoCommand(
+                        $id
+                    )
+                );
+        } catch (DomainInvalidAssertionException $e) {
+            return $this->json(
+                [
+                    'error' => $e->getMessage()
+                ],
+                400,
+                ["Content-Type" => "application/json"]
             );
-
+        }
 
         return $this->json(
             [],

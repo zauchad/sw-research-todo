@@ -10,6 +10,7 @@ framework:
                     - validation
                     - dispatch_after_current_bus
                     - doctrine_transaction
+                    - 'SwResearch\Infrastructure\CommandBus\FailureCatcherMiddleware'
             event.bus:
                 middleware:
                     - validation
