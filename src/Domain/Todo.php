@@ -32,8 +32,8 @@ class Todo
 
     public function updateName(string $name)
     {
-        DomainAssertion::notEmpty($name, "Name can't be empty");
-        DomainAssertion::maxLength($name, 150, "Name length can't exceed 150 characters");
+        DomainAssertion::notEmpty(trim($name), "Name can't be empty");
+        DomainAssertion::maxLength(trim($name), 150, "Name length can't exceed 150 characters");
 
         $this->name = $name;
     }
