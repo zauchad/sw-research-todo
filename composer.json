@@ -97,7 +97,8 @@
             "@logs:php:purge",
             "@cache:test:clear",
             "@tests:php:unit",
-            "@tests:php:cs"
+            "@tests:php:cs",
+            "@yarn:eslint"
         ],
         "dependencies:dev:install": [
             "@composer:dev:install",
@@ -108,6 +109,9 @@
         ],
         "yarn:dev:install": [
             "yarn install"
+        ],
+        "yarn:eslint": [
+            "yarn eslint:dry"
         ],
         "build:dev:ui": [
             "yarn build:dev"

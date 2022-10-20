@@ -16,7 +16,7 @@ class DbalTodoQuery implements TodoQueryInterface
     {
     }
 
-    public function getAll(): array
+    public function getAll() : array
     {
         $queryBuilder = $this->getHydratedQueryBuilder();
 
@@ -32,7 +32,7 @@ class DbalTodoQuery implements TodoQueryInterface
         );
     }
 
-    public function getLastPosition(): int
+    public function getLastPosition() : int
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
@@ -47,7 +47,7 @@ class DbalTodoQuery implements TodoQueryInterface
         );
     }
 
-    public function getById(string $id): Todo
+    public function getById(string $id) : Todo
     {
         $queryBuilder = $this->getHydratedQueryBuilder()
             ->andWhere('t.id = :id')
@@ -62,7 +62,7 @@ class DbalTodoQuery implements TodoQueryInterface
         return $this->hydrate($result);
     }
 
-    private function getHydratedQueryBuilder(): QueryBuilder
+    private function getHydratedQueryBuilder() : QueryBuilder
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
@@ -74,7 +74,7 @@ class DbalTodoQuery implements TodoQueryInterface
         return $queryBuilder;
     }
 
-    private function hydrate(array $result): Todo
+    private function hydrate(array $result) : Todo
     {
         return new Todo(
             $result['id'],

@@ -10,7 +10,7 @@ class UpToTenTodosSpecification
     {
     }
 
-    public function isSatisfied(): bool
+    public function isSatisfied() : bool
     {
         return $this->todos->countAll() < 10;
     }

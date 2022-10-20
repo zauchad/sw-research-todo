@@ -12,12 +12,12 @@ class UpdateTodoPositionCommand
     ) {
     }
 
-    public function id(): string
+    public function id() : string
     {
         return $this->id;
     }
 
-    public function position(): int
+    public function position() : int
     {
         return $this->position;
     }

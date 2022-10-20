@@ -15,7 +15,7 @@ class RemoveTodoHandler
     ) {
     }
 
-    public function __invoke(RemoveTodoCommand $command): void
+    public function __invoke(RemoveTodoCommand $command) : void
     {
         $this->todos->remove(Uuid::fromString($command->id()));
     }

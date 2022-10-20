@@ -11,7 +11,7 @@ class RemoveTodoCommand
     ) {
     }
 
-    public function id(): string
+    public function id() : string
     {
         return $this->id;
     }

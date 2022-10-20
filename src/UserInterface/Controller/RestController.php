@@ -22,7 +22,7 @@ class RestController extends AbstractController
     #[Route(path: '/api/todos', name: 'get_all_todo', methods: ['GET'])]
     public function getAllTodos(
         TodoQueryInterface $todoQuery
-    ): Response {
+    ) : Response {
         return $this->json(
             $todoQuery->getAll(),
             200,
@@ -35,7 +35,7 @@ class RestController extends AbstractController
         Request $request,
         MessageBusInterface $messageBus,
         TodoQueryInterface $todoQuery
-    ): Response {
+    ) : Response {
         $payload = json_decode($request->getContent(), true);
         $todoQuery->getLastPosition();
 
@@ -69,7 +69,7 @@ class RestController extends AbstractController
     public function updateTodoPosition(
         Request $request,
         MessageBusInterface $messageBus,
-    ): Response {
+    ) : Response {
         $payload = json_decode($request->getContent(), true);
 
         try {
@@ -101,7 +101,7 @@ class RestController extends AbstractController
     public function updateTodoName(
         Request $request,
         MessageBusInterface $messageBus,
-    ): Response {
+    ) : Response {
         $payload = json_decode($request->getContent(), true);
 
         try {
@@ -133,7 +133,7 @@ class RestController extends AbstractController
     public function removeTodo(
         string $id,
         MessageBusInterface $messageBus,
-    ): Response {
+    ) : Response {
         try {
             $messageBus
                 ->dispatch(

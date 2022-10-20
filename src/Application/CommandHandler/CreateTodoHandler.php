@@ -18,7 +18,7 @@ class CreateTodoHandler
     ) {
     }
 
-    public function __invoke(CreateTodoCommand $command): void
+    public function __invoke(CreateTodoCommand $command) : void
     {
         $this->todos->persist(
             new Todo(

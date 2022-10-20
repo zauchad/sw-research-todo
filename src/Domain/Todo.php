@@ -43,22 +43,22 @@ class Todo
         $this->position = $position;
     }
 
-    public function id(): UuidInterface
+    public function id() : UuidInterface
     {
         return $this->id;
     }
 
-    public function name(): string
+    public function name() : string
     {
         return $this->name;
     }
 
-    public function position(): int
+    public function position() : int
     {
         return $this->position;
     }
 
-    public function createdAt(): DateTimeImmutable
+    public function createdAt() : DateTimeImmutable
     {
         return $this->createdAt;
     }

@@ -15,7 +15,7 @@ class UpdateTodoPositionHandler
     ) {
     }
 
-    public function __invoke(UpdateTodoPositionCommand $command): void
+    public function __invoke(UpdateTodoPositionCommand $command) : void
     {
         $todo = $this->todos->getById(Uuid::fromString($command->id()));
         $oldPosition = $todo->position();

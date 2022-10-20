@@ -16,12 +16,12 @@ class InMemoryTodo implements TodoInterface
      */
     private array $todos = [];
 
-    public function persist(Todo $todo): void
+    public function persist(Todo $todo) : void
     {
         $this->todos[] = $todo;
     }
 
-    public function getById(UuidInterface $id): Todo
+    public function getById(UuidInterface $id) : Todo
     {
         foreach ($this->todos as $todo) {
             if ($id->equals($todo->id())) {
@@ -32,7 +32,7 @@ class InMemoryTodo implements TodoInterface
         throw new InfrastructureNotFoundException(sprintf('Todo not found by id %s', $id));
     }
 
-    public function remove(UuidInterface $id): void
+    public function remove(UuidInterface $id) : void
     {
         foreach ($this->todos as $index => $todo) {
             if ($id->equals($todo->id())) {
@@ -41,12 +41,12 @@ class InMemoryTodo implements TodoInterface
         }
     }
 
-    public function getAll(): array
+    public function getAll() : array
     {
         return $this->todos;
     }
 
-    public function countAll(): int
+    public function countAll() : int
     {
         return count($this->todos);
     }

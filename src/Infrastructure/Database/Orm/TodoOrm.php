@@ -17,12 +17,12 @@ class TodoOrm implements TodoInterface
     {
     }
 
-    public function persist(Todo $todo): void
+    public function persist(Todo $todo) : void
     {
         $this->entityManager->persist($todo);
     }
 
-    public function getById(UuidInterface $id): Todo
+    public function getById(UuidInterface $id) : Todo
     {
         $item = $this->getRepository()->find($id);
 
@@ -33,20 +33,20 @@ class TodoOrm implements TodoInterface
         return $item;
     }
 
-    public function remove(UuidInterface $id): void
+    public function remove(UuidInterface $id) : void
     {
         $todo = $this->getRepository()->find($id);
         $this->entityManager->remove($todo);
     }
 
-    public function getAll(): array
+    public function getAll() : array
     {
         return $this
             ->getRepository()
             ->findAll();
     }
 
-    public function countAll(): int
+    public function countAll() : int
     {
         return $this
             ->getRepository()
@@ -56,7 +56,7 @@ class TodoOrm implements TodoInterface
             ->getSingleScalarResult();
     }
 
-    private function getRepository(): EntityRepository
+    private function getRepository() : EntityRepository
     {
         return $this
             ->entityManager

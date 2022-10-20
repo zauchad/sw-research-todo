@@ -12,12 +12,12 @@ class UpdateTodoNameCommand
     ) {
     }
 
-    public function id(): string
+    public function id() : string
     {
         return $this->id;
     }
 
-    public function name(): string
+    public function name() : string
     {
         return $this->name;
     }
