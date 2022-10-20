@@ -14,7 +14,8 @@ class Todo implements JsonSerializable
         private DateTimeImmutable $createdAt,
         private string $name,
         private int $position,
-    ) {}
+    ) {
+    }
 
     public function id(): string
     {

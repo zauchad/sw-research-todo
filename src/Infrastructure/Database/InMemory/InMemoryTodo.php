@@ -16,7 +16,7 @@ class InMemoryTodo implements TodoInterface
      */
     private array $todos = [];
 
-    public function persist(Todo $todo) : void
+    public function persist(Todo $todo): void
     {
         $this->todos[] = $todo;
     }
@@ -29,12 +29,7 @@ class InMemoryTodo implements TodoInterface
             }
         }
 
-        throw new InfrastructureNotFoundException(
-            sprintf(
-                'Todo not found by id %s',
-                $id
-            )
-        );
+        throw new InfrastructureNotFoundException(sprintf('Todo not found by id %s', $id));
     }
 
     public function remove(UuidInterface $id): void

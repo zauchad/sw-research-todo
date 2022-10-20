@@ -6,4 +6,6 @@ namespace SwResearch\Domain\Exception;
 
 use Exception;
 
-class DomainException extends Exception {}
+class DomainException extends Exception
+{
+}

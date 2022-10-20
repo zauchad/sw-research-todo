@@ -12,7 +12,9 @@ use SwResearch\Application\Query\TodoQueryInterface;
 
 class DbalTodoQuery implements TodoQueryInterface
 {
-    public function __construct(private readonly Connection $connection) {}
+    public function __construct(private readonly Connection $connection)
+    {
+    }
 
     public function getAll(): array
     {
@@ -35,16 +37,14 @@ class DbalTodoQuery implements TodoQueryInterface
         $queryBuilder = $this->connection->createQueryBuilder();
 
         $queryBuilder
-            ->select('MAX(position)')
+            ->select('COALESCE(MAX(position), -1)')
             ->from('todos', 't');
 
-        $result = $this->connection->fetchOne(
+        return (int) $this->connection->fetchOne(
             $queryBuilder->getSQL(),
             $queryBuilder->getParameters(),
             $queryBuilder->getParameterTypes()
         );
-
-        return $result ?? -1;
     }
 
     public function getById(string $id): Todo
@@ -62,24 +62,8 @@ class DbalTodoQuery implements TodoQueryInterface
         return $this->hydrate($result);
     }
 
-    public function getByPosition(int $position): Todo
+    private function getHydratedQueryBuilder(): QueryBuilder
     {
-        $queryBuilder = $this->getHydratedQueryBuilder()
-            ->andWhere('t.position = :position')
-            ->setParameter('position', $position);
-
-        $result = $this->connection->fetchAssociative(
-            $queryBuilder->getSQL(),
-            $queryBuilder->getParameters(),
-            $queryBuilder->getParameterTypes()
-        );
-
-        dd($position, $result);
-
-        return $this->hydrate($result);
-    }
-
-    private function getHydratedQueryBuilder() : QueryBuilder {
         $queryBuilder = $this->connection->createQueryBuilder();
 
         $queryBuilder
@@ -90,7 +74,7 @@ class DbalTodoQuery implements TodoQueryInterface
         return $queryBuilder;
     }
 
-    private function hydrate(array $result) : Todo
+    private function hydrate(array $result): Todo
     {
         return new Todo(
             $result['id'],

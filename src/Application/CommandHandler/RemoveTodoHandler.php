@@ -12,9 +12,10 @@ class RemoveTodoHandler
 {
     public function __construct(
         private readonly TodoInterface $todos
-    ) {}
+    ) {
+    }
 
-    public function __invoke(RemoveTodoCommand $command) : void
+    public function __invoke(RemoveTodoCommand $command): void
     {
         $this->todos->remove(Uuid::fromString($command->id()));
     }

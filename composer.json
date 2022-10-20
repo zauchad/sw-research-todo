@@ -35,7 +35,8 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "bin-dir": "bin"
     },
     "autoload": {
         "psr-4": {
@@ -66,6 +67,85 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "project:reset": [
+            "@dependencies:dev:install",
+            "@build:dev:ui",
+            "@cache:dev:clear",
+            "@cache:test:clear",
+            "@database:dev:reset"
+        ],
+        "php:cs": [
+            "bin/php-cs-fixer fix -v --show-progress dots --config='.php-cs-fixer.dist.php' --using-cache=no src",
+            "bin/php-cs-fixer fix -v --show-progress dots --config='.php-cs-fixer.dist.php' --using-cache=no migrations",
+            "bin/php-cs-fixer fix -v --show-progress dots --config='.php-cs-fixer.dist.php' --using-cache=no tests"
+        ],
+        "php:quality": [
+            "@tests:php:stan",
+            "@tests:php:psalm"
+        ],
+        "tests:php:psalm": [
+            "bin/psalm --long-progress --config='psalm.xml'"
+        ],
+        "tests:php:psalm:security": [
+            "bin/psalm --taint-analysis --long-progress --config='psalm.xml'"
+        ],
+        "tests:php:stan": [
+            "bin/phpstan analyse -c phpstan.neon"
+        ],
+        "tests": [
+            "@logs:php:purge",
+            "@cache:test:clear",
+            "@tests:php:unit",
+            "@tests:php:cs"
+        ],
+        "dependencies:dev:install": [
+            "@composer:dev:install",
+            "@yarn:dev:install"
+        ],
+        "composer:dev:install": [
+            "composer install --no-interaction --optimize-autoloader"
+        ],
+        "yarn:dev:install": [
+            "yarn install"
+        ],
+        "build:dev:ui": [
+            "yarn build:dev"
+        ],
+        "build:prod:ui": [
+            "yarn build:prod"
+        ],
+        "build:ui": [
+            "yarn build:prod"
+        ],
+        "cache:dev:clear": [
+            "bin/console cache:clear --env=dev"
+        ],
+        "cache:test:clear": [
+            "bin/console cache:clear --env=test"
+        ],
+        "database:dev:create": [
+            "bin/console doctrine:database:create -n --env=dev",
+            "bin/console doctrine:migrations:migrate -n --env=dev"
+        ],
+        "database:dev:drop": [
+            "rm -f var/todo.db"
+        ],
+        "database:dev:reset": [
+            "@database:dev:drop",
+            "@database:dev:create"
+        ],
+        "logs:php:purge": [
+            "rm -f var/logs/*.log"
+        ],
+        "tests:php:unit": [
+            "bin/phpunit --testsuite unit --verbose --no-coverage --no-logging"
+        ],
+        "tests:php:cs": [
+            "bin/php-cs-fixer fix -v --dry-run --show-progress dots --using-cache=no --config='.php-cs-fixer.dist.php'",
+            "@tests:php:stan",
+            "@tests:php:psalm",
+            "@tests:php:psalm:security"
         ]
     },
     "conflict": {
@@ -79,7 +159,10 @@
         }
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.12",
+        "phpstan/phpstan": "^1.8",
         "phpunit/phpunit": "^9",
-        "symfony/maker-bundle": "^1.47"
+        "symfony/maker-bundle": "^1.47",
+        "vimeo/psalm": "^4.29"
     }
 }

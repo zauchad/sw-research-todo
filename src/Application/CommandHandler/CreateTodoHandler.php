@@ -15,9 +15,10 @@ class CreateTodoHandler
     public function __construct(
         private readonly TodoInterface $todos,
         private readonly UpToTenTodosSpecification $upToTenTodosSpecification
-    ) {}
+    ) {
+    }
 
-    public function __invoke(CreateTodoCommand $command) : void
+    public function __invoke(CreateTodoCommand $command): void
     {
         $this->todos->persist(
             new Todo(

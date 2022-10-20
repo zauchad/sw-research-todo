@@ -19,20 +19,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RestController extends AbstractController
 {
-    #[Route(path: "/api/todos", name: "get_all_todo", methods: ["GET"])]
-    function getAllTodos(
+    #[Route(path: '/api/todos', name: 'get_all_todo', methods: ['GET'])]
+    public function getAllTodos(
         TodoQueryInterface $todoQuery
-    ): Response
-    {
+    ): Response {
         return $this->json(
             $todoQuery->getAll(),
             200,
-            ["Content-Type" => "application/json"]
+            ['Content-Type' => 'application/json']
         );
     }
 
-    #[Route(path: "/api/todo", name: "create_todo", methods: ["POST"])]
-    function createTodo(
+    #[Route(path: '/api/todo', name: 'create_todo', methods: ['POST'])]
+    public function createTodo(
         Request $request,
         MessageBusInterface $messageBus,
         TodoQueryInterface $todoQuery
@@ -52,23 +51,22 @@ class RestController extends AbstractController
         } catch (DomainInvalidAssertionException $e) {
             return $this->json(
                 [
-                    'error' => $e->getMessage()
+                    'error' => $e->getMessage(),
                 ],
                 400,
-                ["Content-Type" => "application/json"]
+                ['Content-Type' => 'application/json']
             );
         }
-
 
         return $this->json(
             [],
             200,
-            ["Content-Type" => "application/json"]
+            ['Content-Type' => 'application/json']
         );
     }
 
-    #[Route(path: "/api/todo/position", name: "update_todo_position", methods: ["PUT"])]
-    function updateTodoPosition(
+    #[Route(path: '/api/todo/position', name: 'update_todo_position', methods: ['PUT'])]
+    public function updateTodoPosition(
         Request $request,
         MessageBusInterface $messageBus,
     ): Response {
@@ -85,22 +83,22 @@ class RestController extends AbstractController
         } catch (DomainInvalidAssertionException $e) {
             return $this->json(
                 [
-                    'error' => $e->getMessage()
+                    'error' => $e->getMessage(),
                 ],
                 400,
-                ["Content-Type" => "application/json"]
+                ['Content-Type' => 'application/json']
             );
         }
 
         return $this->json(
             [],
             200,
-            ["Content-Type" => "application/json"]
+            ['Content-Type' => 'application/json']
         );
     }
 
-    #[Route(path: "/api/todo/name", name: "update_todo_name", methods: ["PUT"])]
-    function updateTodoName(
+    #[Route(path: '/api/todo/name', name: 'update_todo_name', methods: ['PUT'])]
+    public function updateTodoName(
         Request $request,
         MessageBusInterface $messageBus,
     ): Response {
@@ -117,22 +115,22 @@ class RestController extends AbstractController
         } catch (DomainInvalidAssertionException $e) {
             return $this->json(
                 [
-                    'error' => $e->getMessage()
+                    'error' => $e->getMessage(),
                 ],
                 400,
-                ["Content-Type" => "application/json"]
+                ['Content-Type' => 'application/json']
             );
         }
 
         return $this->json(
             [],
             200,
-            ["Content-Type" => "application/json"]
+            ['Content-Type' => 'application/json']
         );
     }
 
-    #[Route(path: "/api/todo/{id}", name: "remove_todo", methods: ["DELETE"])]
-    function removeTodo(
+    #[Route(path: '/api/todo/{id}', name: 'remove_todo', methods: ['DELETE'])]
+    public function removeTodo(
         string $id,
         MessageBusInterface $messageBus,
     ): Response {
@@ -146,17 +144,17 @@ class RestController extends AbstractController
         } catch (DomainInvalidAssertionException $e) {
             return $this->json(
                 [
-                    'error' => $e->getMessage()
+                    'error' => $e->getMessage(),
                 ],
                 400,
-                ["Content-Type" => "application/json"]
+                ['Content-Type' => 'application/json']
             );
         }
 
         return $this->json(
             [],
             200,
-            ["Content-Type" => "application/json"]
+            ['Content-Type' => 'application/json']
         );
     }
 }

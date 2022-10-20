@@ -10,7 +10,7 @@ use SwResearch\Tests\Unit\Domain\Mother\TodoMother;
 
 class TodoTest extends TestCase
 {
-    public function test_creating_todo()
+    public function testCreatingTodo()
     {
         $todo = TodoMother::create($name = 'Clean the house');
 
@@ -19,21 +19,21 @@ class TodoTest extends TestCase
         self::assertNotNull($todo->createdAt());
     }
 
-    public function test_update_todo_name()
+    public function testUpdateTodoName()
     {
         $todo = TodoMother::create('Drive car back to the office');
         $todo->updateName($name = 'Updated TODO');
         self::assertEquals($name, $todo->name());
     }
 
-    public function test_update_position()
+    public function testUpdatePosition()
     {
         $todo = TodoMother::create('Buy flower');
         $todo->updatePosition($position = 13);
         self::assertEquals($position, $todo->position());
     }
 
-    public function test_should_throw_exception_when_creating_todo_with_empty_name()
+    public function testShouldThrowExceptionWhenCreatingTodoWithEmptyName()
     {
         $this->expectExceptionObject(
             new DomainInvalidAssertionException('Name can\'t be empty')
@@ -42,26 +42,26 @@ class TodoTest extends TestCase
         TodoMother::create(name: '');
     }
 
-    public function test_should_throw_exception_when_creating_todo_with_too_long_name()
+    public function testShouldThrowExceptionWhenCreatingTodoWithTooLongName()
     {
         $this->expectExceptionObject(
             new DomainInvalidAssertionException('Name length can\'t exceed 150 characters')
         );
 
-        TodoMother::create(name: str_repeat("N", 151));
+        TodoMother::create(name: str_repeat('N', 151));
     }
 
-    public function test_should_throw_exception_when_updating_todo_with_too_long_name()
+    public function testShouldThrowExceptionWhenUpdatingTodoWithTooLongName()
     {
         $this->expectExceptionObject(
             new DomainInvalidAssertionException('Name length can\'t exceed 150 characters')
         );
 
         $todo = TodoMother::create(name: 'Example todo name');
-        $todo->updateName(str_repeat("N", 151));
+        $todo->updateName(str_repeat('N', 151));
     }
 
-    public function test_should_throw_exception_when_creating_more_than_ten_todos()
+    public function testShouldThrowExceptionWhenCreatingMoreThanTenTodos()
     {
         $this->expectExceptionObject(
             new DomainInvalidAssertionException('You can add up to 10 TODO\'s')
@@ -69,9 +69,9 @@ class TodoTest extends TestCase
 
         $todos = new InMemoryTodo();
 
-        for ($i = 0; $i <= 10; $i++) {
+        for ($i = 0; $i <= 10; ++$i) {
             $todos->persist(
-                TodoMother::create('Buy flower' . $i, $todos)
+                TodoMother::create('Buy flower'.$i, $todos)
             );
         }
     }

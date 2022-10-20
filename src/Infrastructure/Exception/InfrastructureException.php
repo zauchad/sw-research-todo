@@ -6,4 +6,6 @@ namespace SwResearch\Infrastructure\Exception;
 
 use Exception;
 
-class InfrastructureException extends Exception {}
+class InfrastructureException extends Exception
+{
+}

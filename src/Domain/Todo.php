@@ -30,14 +30,16 @@ class Todo
         $this->createdAt = new DateTimeImmutable();
     }
 
-    public function updateName(string $name) {
+    public function updateName(string $name)
+    {
         DomainAssertion::notEmpty($name, "Name can't be empty");
         DomainAssertion::maxLength($name, 150, "Name length can't exceed 150 characters");
 
         $this->name = $name;
     }
 
-    public function updatePosition(int $position) {
+    public function updatePosition(int $position)
+    {
         $this->position = $position;
     }
 

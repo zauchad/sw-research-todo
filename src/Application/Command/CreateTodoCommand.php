@@ -10,7 +10,8 @@ class CreateTodoCommand
         private readonly string $id,
         private readonly string $name,
         private readonly int $position
-    ) {}
+    ) {
+    }
 
     public function id(): string
     {

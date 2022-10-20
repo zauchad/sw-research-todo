@@ -13,9 +13,11 @@ use SwResearch\Infrastructure\Exception\InfrastructureRuntimeException;
 
 class TodoOrm implements TodoInterface
 {
-    public function __construct(private readonly EntityManagerInterface $entityManager) {}
+    public function __construct(private readonly EntityManagerInterface $entityManager)
+    {
+    }
 
-    public function persist(Todo $todo) : void
+    public function persist(Todo $todo): void
     {
         $this->entityManager->persist($todo);
     }
@@ -24,7 +26,7 @@ class TodoOrm implements TodoInterface
     {
         $item = $this->getRepository()->find($id);
 
-        if ($item === null) {
+        if (null === $item) {
             throw new InfrastructureRuntimeException(sprintf('Todo not found by id %s', $id));
         }
 
@@ -54,7 +56,7 @@ class TodoOrm implements TodoInterface
             ->getSingleScalarResult();
     }
 
-    private function getRepository() : EntityRepository
+    private function getRepository(): EntityRepository
     {
         return $this
             ->entityManager

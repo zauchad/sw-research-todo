@@ -9,7 +9,8 @@ class UpdateTodoPositionCommand
     public function __construct(
         private readonly string $id,
         private readonly int $position
-    ) {}
+    ) {
+    }
 
     public function id(): string
     {
