@@ -5,11 +5,6 @@ import axios from "axios";
 
 function TodoList({quotes, refreshHandler}) {
     function onDragEnd(result) {
-        console.log(
-            result.source.index,
-            result.destination.index,
-        );
-
         if (!result.destination) {
             return;
         }
@@ -22,16 +17,8 @@ function TodoList({quotes, refreshHandler}) {
             id: result.draggableId,
             position: result.destination.index,
         })
-            .then(function (response) {
-                refreshHandler();
-                console.log('success', response);
-            })
-            .catch(function (error) {
-                // handle error
-                console.log('error', error);
-            })
             .then(function () {
-
+                refreshHandler();
             });
     }
 

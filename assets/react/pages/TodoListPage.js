@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {TodoList} from "../components/TodoList";
+import toast, { Toaster } from 'react-hot-toast';
 import axios from "axios";
 
 const TodoListPage = () => {
@@ -24,11 +25,12 @@ const TodoListPage = () => {
 
     return (
         <div className="container-xxl py-4">
+            <Toaster />
             <h2 className="mb-4">SW Research TODO list</h2>
-                <CreateTodoButton refreshHandler={refreshTodos}/>
-                <div>
-                    <TodoList quotes={state.quotes} refreshHandler={refreshTodos}/>
-                </div>
+            <CreateTodoButton refreshHandler={refreshTodos}/>
+            <div>
+                <TodoList quotes={state.quotes} refreshHandler={refreshTodos}/>
+            </div>
         </div>
     );
 };
@@ -45,11 +47,10 @@ const CreateTodoButton = ({refreshHandler}) => {
         })
             .then(function (response) {
                 refreshHandler();
-                console.log('success', response);
+                toast.success('TODO has been created!');
             })
             .catch(function (error) {
-                // handle error
-                console.log('error', error);
+                toast.error(error.response.data.error);
             })
             .then(function () {
                 setState({
@@ -68,7 +69,7 @@ const CreateTodoButton = ({refreshHandler}) => {
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <h5 className="modal-title" id="exampleModalLabel">Add TODO</h5>
                         </div>
                         <div className="modal-body">
                             <form onSubmit={handleSubmit}>
@@ -77,7 +78,10 @@ const CreateTodoButton = ({refreshHandler}) => {
                                     <input onChange={e => setState({name: e.target.value})} value={state.name} type="text" className="form-control" id="todoNameHtml" aria-describedby="nameHelp" placeholder="Add a new task" />
                                     <div id="nameHelp" className="form-text">Type TODO name</div>
                                 </div>
-                                <button type="submit" className="btn btn-success">Add</button>
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" className="btn btn-success">Add</button>
+                                </div>
                             </form>
                         </div>
                     </div>

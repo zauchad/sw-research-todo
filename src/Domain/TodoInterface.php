@@ -18,4 +18,6 @@ interface TodoInterface
      * @return Todo[]
      */
     public function getAll() : array;
+
+    public function countAll() : int;
 }

@@ -44,6 +44,16 @@ class TodoOrm implements TodoInterface
             ->findAll();
     }
 
+    public function countAll(): int
+    {
+        return $this
+            ->getRepository()
+            ->createQueryBuilder('t')
+            ->select('COUNT(t.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     private function getRepository() : EntityRepository
     {
         return $this

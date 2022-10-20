@@ -11,16 +11,22 @@ use SwResearch\Infrastructure\DomainAssertion;
 class Todo
 {
     private DateTimeImmutable $createdAt;
+    private string $name;
 
     public function __construct(
         private readonly UuidInterface $id,
-        private string $name,
+        string $name,
         private int $position,
+        UpToTenTodosSpecification $upToTenTodosSpecification
     ) {
-        DomainAssertion::notEmpty($this->name, "Name can't be empty");
-        DomainAssertion::maxLength($this->name, 150, "Name length can't exceed 150 characters");
-        DomainAssertion::between($this->position, 0, 9, "Position value must be between 0 and 9");
+        DomainAssertion::true(
+            $upToTenTodosSpecification->isSatisfied(),
+            'You can add up to 10 TODO\'s'
+        );
+        DomainAssertion::notEmpty(trim($name), "Name can't be empty");
+        DomainAssertion::maxLength(trim($name), 150, "Name length can't exceed 150 characters");
 
+        $this->name = trim($name);
         $this->createdAt = new DateTimeImmutable();
     }
 
@@ -32,8 +38,6 @@ class Todo
     }
 
     public function updatePosition(int $position) {
-        DomainAssertion::between($position, 0, 9, "Position value must be between 0 and 9");
-
         $this->position = $position;
     }
 

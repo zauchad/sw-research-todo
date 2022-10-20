@@ -8,7 +8,7 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:
-            Aterian\Affiliate\Domain:
+            SwResearch\Domain:
                 type: xml
                 is_bundle: false
                 dir: '%kernel.project_dir%/config/doctrine/'

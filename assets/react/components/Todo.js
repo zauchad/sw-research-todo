@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
-import { unmountComponentAtNode } from "react-dom";
 import axios from "axios";
 import {Modal} from "bootstrap";
+import toast from "react-hot-toast";
 
 const Todo = (props) => {
-    // console.log('Todo props:', props);
     return (
         <div ref={props.innerRef} className="card mb-3 m-auto" {...props}>
             <div className="card-body d-flex justify-content-between align-items-center">
@@ -31,11 +30,10 @@ const UpdateNameTodoButton = ({id, refreshHandler}) => {
         })
             .then(function (response) {
                 refreshHandler();
-                console.log('success', response);
+                toast.success('TODO name has been updated!');
             })
             .catch(function (error) {
-                // handle error
-                console.log('error', error);
+                toast.error(error.response.data.error);
             })
             .then(function () {
                 setState({
@@ -63,7 +61,10 @@ const UpdateNameTodoButton = ({id, refreshHandler}) => {
                                     <input onChange={e => setState({name: e.target.value})} value={state.name} type="text" className="form-control" id="todoNameHtml" aria-describedby="nameHelp" placeholder="Add a new task" />
                                     <div id="nameHelp" className="form-text">Type TODO name</div>
                                 </div>
-                                <button type="submit" className="btn btn-warning">Update</button>
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" className="btn btn-warning">Update</button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -80,11 +81,11 @@ const RemoveTodoButton = ({id, refreshHandler}) => {
         axios.delete(`/api/todo/${id}`)
             .then(function (response) {
                 refreshHandler();
-                console.log('success', response);
-
                 Modal.getInstance(
                     document.getElementById(`todoRemoveModal${id}`)
                 ).hide();
+
+                toast.success('TODO has been removed!');
             });
     }
 
@@ -98,11 +99,12 @@ const RemoveTodoButton = ({id, refreshHandler}) => {
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id={`todoRemoveModalLabel${id}`}>Remove TODO</h5>
+                            <h5 className="modal-title" id={`todoRemoveModalLabel${id}`}>Are you sure to remove?</h5>
                         </div>
                         <div className="modal-body">
-                            <form onSubmit={handleSubmit}>
-                                <button type="submit" className="btn btn-danger">Remove</button>
+                            <form onSubmit={handleSubmit} className="d-flex justify-content-between align-items-center">
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                <button type="submit" className="btn btn-danger">Yes</button>
                             </form>
                         </div>
                     </div>
