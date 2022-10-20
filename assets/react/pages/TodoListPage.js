@@ -5,17 +5,17 @@ import { TodoList } from '../components/TodoList';
 import { CreateTodoButton } from '../components/CreateTodoButton';
 
 function TodoListPage() {
-  const [state, setState] = useState({ quotes: [] });
+  const [state, setState] = useState({ todos: [] });
 
   const refreshTodos = () => {
     axios.get('/api/todos')
       .then((response) => {
-        const quotes = response.data;
+        const todos = response.data;
 
-        quotes.sort((a, b) => a.position > b.position);
+        todos.sort((a, b) => a.position > b.position);
 
         setState({
-          quotes,
+          todos,
         });
       });
   };
@@ -30,7 +30,7 @@ function TodoListPage() {
       <h2 className="mb-4">SW Research TODO list</h2>
       <CreateTodoButton refreshHandler={refreshTodos} />
       <div>
-        <TodoList quotes={state.quotes} refreshHandler={refreshTodos} />
+        <TodoList todos={state.todos} refreshHandler={refreshTodos} />
       </div>
     </div>
   );

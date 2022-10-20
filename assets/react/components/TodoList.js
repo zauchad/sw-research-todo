@@ -3,7 +3,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import axios from 'axios';
 import { Todo } from './Todo';
 
-function TodoList({ quotes, refreshHandler }) {
+function TodoList({ todos, refreshHandler }) {
   function onDragEnd(result) {
     if (!result.destination) {
       return;
@@ -28,21 +28,21 @@ function TodoList({ quotes, refreshHandler }) {
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             {
-                            quotes.map((quote, index) => (
-                              <Draggable draggableId={quote.id} index={index} key={quote.id}>
-                                {(draggableProvided) => (
-                                  <Todo
-                                    id={quote.id}
-                                    name={quote.name}
-                                    innerRef={draggableProvided.innerRef}
-                                    refreshHandler={refreshHandler}
-                                    {...draggableProvided.draggableProps}
-                                    {...draggableProvided.dragHandleProps}
-                                  />
-                                )}
-                              </Draggable>
-                            ))
-                        }
+              todos.map((todo, index) => (
+                <Draggable draggableId={todo.id} index={index} key={todo.id}>
+                  {(draggableProvided) => (
+                    <Todo
+                      id={todo.id}
+                      name={todo.name}
+                      innerRef={draggableProvided.innerRef}
+                      refreshHandler={refreshHandler}
+                      {...draggableProvided.draggableProps}
+                      {...draggableProvided.dragHandleProps}
+                    />
+                  )}
+                </Draggable>
+              ))
+            }
             {provided.placeholder}
           </div>
         )}
