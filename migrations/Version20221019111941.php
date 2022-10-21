@@ -14,7 +14,7 @@ final class Version20221019111941 extends AbstractMigration
 {
     public function getDescription() : string
     {
-        return '';
+        return "";
     }
 
     public function up(Schema $schema) : void
@@ -23,12 +23,12 @@ final class Version20221019111941 extends AbstractMigration
         $this->addSql('CREATE TABLE todos (id CHAR(36) NOT NULL --(DC2Type:uuid)
         , created_at DATETIME NOT NULL --(DC2Type:datetime_immutable)
         , name VARCHAR(150) NOT NULL, position SMALLINT NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE INDEX id_idx ON todos (id)');
+        $this->addSql("CREATE INDEX id_idx ON todos (id)");
     }
 
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP TABLE todos');
+        $this->addSql("DROP TABLE todos");
     }
 }

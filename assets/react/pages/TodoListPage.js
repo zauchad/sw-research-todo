@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { Toaster } from 'react-hot-toast';
-import axios from 'axios';
-import { TodoList } from '../components/TodoList';
-import { CreateTodoButton } from '../components/CreateTodoButton';
+import React, { useState, useEffect } from "react";
+import { Toaster } from "react-hot-toast";
+import axios from "axios";
+import { TodoList } from "../components/TodoList";
+import { CreateTodoButton } from "../components/CreateTodoButton";
 
 function TodoListPage() {
   const [state, setState] = useState({ todos: [] });
 
   const refreshTodos = () => {
-    axios.get('/api/todos')
-      .then((response) => {
-        const todos = response.data;
+    axios.get("/api/todos").then((response) => {
+      const todos = response.data;
 
-        todos.sort((a, b) => a.position > b.position);
+      todos.sort((a, b) => a.position > b.position);
 
-        setState({
-          todos,
-        });
+      setState({
+        todos,
       });
+    });
   };
 
   useEffect(() => {

@@ -19,18 +19,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RestController extends AbstractController
 {
-    #[Route(path: '/api/todos', name: 'get_all_todo', methods: ['GET'])]
-    public function getAllTodos(
-        TodoQueryInterface $todoQuery
-    ) : Response {
-        return $this->json(
-            $todoQuery->getAll(),
-            200,
-            ['Content-Type' => 'application/json']
-        );
+    #[Route(path: "/todos", name: "list_todos", methods: ["GET"])]
+    public function getAllTodos(TodoQueryInterface $todoQuery) : Response
+    {
+        return $this->json($todoQuery->getAll(), 200, [
+            "Content-Type" => "application/json",
+        ]);
     }
 
-    #[Route(path: '/api/todo', name: 'create_todo', methods: ['POST'])]
+    #[Route(path: "/todo", name: "create_todo", methods: ["POST"])]
     public function createTodo(
         Request $request,
         MessageBusInterface $messageBus,
@@ -40,121 +37,100 @@ class RestController extends AbstractController
         $todoQuery->getLastPosition();
 
         try {
-            $messageBus
-                ->dispatch(
-                    new CreateTodoCommand(
-                        Uuid::uuid4()->toString(),
-                        $payload['name'],
-                        $todoQuery->getLastPosition() + 1
-                    )
-                );
+            $messageBus->dispatch(
+                new CreateTodoCommand(
+                    Uuid::uuid4()->toString(),
+                    $payload["name"],
+                    $todoQuery->getLastPosition() + 1
+                )
+            );
         } catch (DomainInvalidAssertionException $e) {
             return $this->json(
                 [
-                    'error' => $e->getMessage(),
+                    "error" => $e->getMessage(),
                 ],
                 400,
-                ['Content-Type' => 'application/json']
+                ["Content-Type" => "application/json"]
             );
         }
 
-        return $this->json(
-            [],
-            200,
-            ['Content-Type' => 'application/json']
-        );
+        return $this->json([], 200, ["Content-Type" => "application/json"]);
     }
 
-    #[Route(path: '/api/todo/position', name: 'update_todo_position', methods: ['PUT'])]
+    #[
+        Route(
+            path: "/todo/position",
+            name: "update_todo_position",
+            methods: ["PUT"]
+        )
+    ]
     public function updateTodoPosition(
         Request $request,
-        MessageBusInterface $messageBus,
+        MessageBusInterface $messageBus
     ) : Response {
         $payload = json_decode($request->getContent(), true);
 
         try {
-            $messageBus
-                ->dispatch(
-                    new UpdateTodoPositionCommand(
-                        $payload['id'],
-                        $payload['position'],
-                    )
-                );
+            $messageBus->dispatch(
+                new UpdateTodoPositionCommand(
+                    $payload["id"],
+                    $payload["position"]
+                )
+            );
         } catch (DomainInvalidAssertionException $e) {
             return $this->json(
                 [
-                    'error' => $e->getMessage(),
+                    "error" => $e->getMessage(),
                 ],
                 400,
-                ['Content-Type' => 'application/json']
+                ["Content-Type" => "application/json"]
             );
         }
 
-        return $this->json(
-            [],
-            200,
-            ['Content-Type' => 'application/json']
-        );
+        return $this->json([], 200, ["Content-Type" => "application/json"]);
     }
 
-    #[Route(path: '/api/todo/name', name: 'update_todo_name', methods: ['PUT'])]
+    #[Route(path: "/todo/name", name: "update_todo_name", methods: ["PATCH"])]
     public function updateTodoName(
         Request $request,
-        MessageBusInterface $messageBus,
+        MessageBusInterface $messageBus
     ) : Response {
         $payload = json_decode($request->getContent(), true);
 
         try {
-            $messageBus
-                ->dispatch(
-                    new UpdateTodoNameCommand(
-                        $payload['id'],
-                        $payload['name'],
-                    )
-                );
+            $messageBus->dispatch(
+                new UpdateTodoNameCommand($payload["id"], $payload["name"])
+            );
         } catch (DomainInvalidAssertionException $e) {
             return $this->json(
                 [
-                    'error' => $e->getMessage(),
+                    "error" => $e->getMessage(),
                 ],
                 400,
-                ['Content-Type' => 'application/json']
+                ["Content-Type" => "application/json"]
             );
         }
 
-        return $this->json(
-            [],
-            200,
-            ['Content-Type' => 'application/json']
-        );
+        return $this->json([], 200, ["Content-Type" => "application/json"]);
     }
 
-    #[Route(path: '/api/todo/{id}', name: 'remove_todo', methods: ['DELETE'])]
+    #[Route(path: "/todo/{id}", name: "remove_todo", methods: ["DELETE"])]
     public function removeTodo(
         string $id,
-        MessageBusInterface $messageBus,
+        MessageBusInterface $messageBus
     ) : Response {
         try {
-            $messageBus
-                ->dispatch(
-                    new RemoveTodoCommand(
-                        $id
-                    )
-                );
+            $messageBus->dispatch(new RemoveTodoCommand($id));
         } catch (DomainInvalidAssertionException $e) {
             return $this->json(
                 [
-                    'error' => $e->getMessage(),
+                    "error" => $e->getMessage(),
                 ],
                 400,
-                ['Content-Type' => 'application/json']
+                ["Content-Type" => "application/json"]
             );
         }
 
-        return $this->json(
-            [],
-            200,
-            ['Content-Type' => 'application/json']
-        );
+        return $this->json([], 200, ["Content-Type" => "application/json"]);
     }
 }

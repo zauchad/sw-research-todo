@@ -10,9 +10,8 @@ use SwResearch\Domain\TodoInterface;
 
 class UpdateTodoNameHandler
 {
-    public function __construct(
-        private readonly TodoInterface $todos
-    ) {
+    public function __construct(private readonly TodoInterface $todos)
+    {
     }
 
     public function __invoke(UpdateTodoNameCommand $command) : void

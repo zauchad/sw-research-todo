@@ -6,9 +6,8 @@ namespace SwResearch\Application\Command;
 
 class RemoveTodoCommand
 {
-    public function __construct(
-        private readonly string $id,
-    ) {
+    public function __construct(private readonly string $id)
+    {
     }
 
     public function id() : string

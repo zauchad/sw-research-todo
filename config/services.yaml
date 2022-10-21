@@ -1,24 +1,24 @@
 parameters:
 
 services:
-    _defaults:
-        autowire: true
-        autoconfigure: true
+  _defaults:
+    autowire: true
+    autoconfigure: true
 
-    SwResearch\:
-        resource: '../src/'
-        exclude:
-            - '../src/Infrastructure/Framework/Kernel.php'
+  SwResearch\:
+    resource: "../src/"
+    exclude:
+      - "../src/Infrastructure/Framework/Kernel.php"
 
-    ###### --- APPLICATION --- #######
+  ###### --- APPLICATION --- #######
 
-    SwResearch\Application\CommandHandler\:
-        resource: '%kernel.project_dir%/src/Application/CommandHandler/'
-        autoconfigure: false
-        tags:
-            - { name: messenger.message_handler, bus: command.bus }
+  SwResearch\Application\CommandHandler\:
+    resource: "%kernel.project_dir%/src/Application/CommandHandler/"
+    autoconfigure: false
+    tags:
+      - { name: messenger.message_handler, bus: command.bus }
 
-    ###### --- DOMAIN --- #######
+  ###### --- DOMAIN --- #######
 
-    SwResearch\Domain\TodoInterface:
-        class: 'SwResearch\Infrastructure\Database\Orm\TodoOrm'
+  SwResearch\Domain\TodoInterface:
+    class: 'SwResearch\Infrastructure\Database\Orm\TodoOrm'

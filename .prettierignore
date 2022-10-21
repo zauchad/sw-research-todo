@@ -1,0 +1,11 @@
+# Ignore artifacts:
+build
+coverage
+
+# Composer/PHP/tmp files
+vendor
+var
+config
+
+# Ignore all HTML files:
+*.html

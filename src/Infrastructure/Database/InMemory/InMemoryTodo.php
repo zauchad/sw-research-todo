@@ -29,7 +29,9 @@ class InMemoryTodo implements TodoInterface
             }
         }
 
-        throw new InfrastructureNotFoundException(sprintf('Todo not found by id %s', $id));
+        throw new InfrastructureNotFoundException(
+            sprintf("Todo not found by id %s", $id)
+        );
     }
 
     public function remove(UuidInterface $id) : void

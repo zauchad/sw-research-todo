@@ -24,7 +24,11 @@ class Todo
             'You can add up to 10 TODO\'s'
         );
         DomainAssertion::notEmpty(trim($name), "Name can't be empty");
-        DomainAssertion::maxLength(trim($name), 150, "Name length can't exceed 150 characters");
+        DomainAssertion::maxLength(
+            trim($name),
+            150,
+            "Name length can't exceed 150 characters"
+        );
 
         $this->name = trim($name);
         $this->createdAt = new DateTimeImmutable();
@@ -33,7 +37,11 @@ class Todo
     public function updateName(string $name)
     {
         DomainAssertion::notEmpty(trim($name), "Name can't be empty");
-        DomainAssertion::maxLength(trim($name), 150, "Name length can't exceed 150 characters");
+        DomainAssertion::maxLength(
+            trim($name),
+            150,
+            "Name length can't exceed 150 characters"
+        );
 
         $this->name = $name;
     }

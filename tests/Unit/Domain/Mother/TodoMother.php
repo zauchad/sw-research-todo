@@ -12,8 +12,10 @@ use SwResearch\Infrastructure\Database\InMemory\InMemoryTodo;
 
 class TodoMother
 {
-    public static function create(string $name, ?TodoInterface $todos = null) : Todo
-    {
+    public static function create(
+        string $name,
+        ?TodoInterface $todos = null
+    ) : Todo {
         return new Todo(
             Uuid::uuid4(),
             $name,

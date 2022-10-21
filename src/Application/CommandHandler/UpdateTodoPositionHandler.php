@@ -10,9 +10,8 @@ use SwResearch\Domain\TodoInterface;
 
 class UpdateTodoPositionHandler
 {
-    public function __construct(
-        private readonly TodoInterface $todos
-    ) {
+    public function __construct(private readonly TodoInterface $todos)
+    {
     }
 
     public function __invoke(UpdateTodoPositionCommand $command) : void
@@ -22,16 +21,20 @@ class UpdateTodoPositionHandler
         $newPosition = $command->position();
 
         foreach ($this->todos->getAll() as $t) {
-            if ($t->position() >= $oldPosition && $newPosition >= $t->position() && $t->position() > 0) {
-                $t->updatePosition(
-                    $t->position() - 1
-                );
+            if (
+                $t->position() >= $oldPosition &&
+                $newPosition >= $t->position() &&
+                $t->position() > 0
+            ) {
+                $t->updatePosition($t->position() - 1);
             }
 
-            if ($t->position() <= $oldPosition && $newPosition <= $t->position() && $t->position() < 9) {
-                $t->updatePosition(
-                    $t->position() + 1
-                );
+            if (
+                $t->position() <= $oldPosition &&
+                $newPosition <= $t->position() &&
+                $t->position() < 9
+            ) {
+                $t->updatePosition($t->position() + 1);
             }
         }
 

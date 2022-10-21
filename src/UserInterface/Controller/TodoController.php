@@ -10,9 +10,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TodoController extends AbstractController
 {
-    #[Route('/', name: 'list', methods: ['GET'])]
+    #[Route("/", name: "list_todos", methods: ["GET"])]
     public function listHtml() : Response
     {
-        return $this->render('list.html.twig');
+        return $this->render("list.html.twig");
     }
 }

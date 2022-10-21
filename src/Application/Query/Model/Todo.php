@@ -13,7 +13,7 @@ class Todo implements JsonSerializable
         private readonly string $id,
         private DateTimeImmutable $createdAt,
         private string $name,
-        private int $position,
+        private int $position
     ) {
     }
 
@@ -40,10 +40,10 @@ class Todo implements JsonSerializable
     public function jsonSerialize() : mixed
     {
         return [
-            'id' => $this->id,
-            'createdAt' => $this->createdAt,
-            'name' => $this->name,
-            'position' => $this->position,
+            "id" => $this->id,
+            "createdAt" => $this->createdAt,
+            "name" => $this->name,
+            "position" => $this->position,
         ];
     }
 }

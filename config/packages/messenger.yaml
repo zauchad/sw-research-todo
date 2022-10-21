@@ -1,21 +1,20 @@
 framework:
-    messenger:
-        # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
-        # failure_transport: failed
+  messenger:
+    # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
+    # failure_transport: failed
 
-        default_bus: command.bus
-        buses:
-            command.bus:
-                middleware:
-                    - validation
-                    - dispatch_after_current_bus
-                    - doctrine_transaction
-                    - 'SwResearch\Infrastructure\CommandBus\FailureCatcherMiddleware'
-            event.bus:
-                middleware:
-                    - validation
-                    - dispatch_after_current_bus
-
+    default_bus: command.bus
+    buses:
+      command.bus:
+        middleware:
+          - validation
+          - dispatch_after_current_bus
+          - doctrine_transaction
+          - 'SwResearch\Infrastructure\CommandBus\FailureCatcherMiddleware'
+      event.bus:
+        middleware:
+          - validation
+          - dispatch_after_current_bus
 # when@test:
 #    framework:
 #        messenger:

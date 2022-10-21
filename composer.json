@@ -1,172 +1,175 @@
 {
-    "type": "project",
-    "license": "proprietary",
-    "minimum-stability": "stable",
-    "prefer-stable": true,
-    "require": {
-        "php": ">=8.1",
-        "ext-ctype": "*",
-        "ext-iconv": "*",
-        "beberlei/assert": "^3.3",
-        "doctrine/doctrine-bundle": "^2.7",
-        "doctrine/doctrine-migrations-bundle": "^3.2",
-        "doctrine/orm": "^2.13",
-        "ramsey/uuid": "^4.5",
-        "ramsey/uuid-doctrine": "^1.8",
-        "symfony/console": "6.1.*",
-        "symfony/dotenv": "6.1.*",
-        "symfony/flex": "^2",
-        "symfony/framework-bundle": "6.1.*",
-        "symfony/messenger": "6.1.*",
-        "symfony/proxy-manager-bridge": "6.1.*",
-        "symfony/runtime": "6.1.*",
-        "symfony/twig-bundle": "6.1.*",
-        "symfony/validator": "6.1.*",
-        "symfony/webpack-encore-bundle": "^1.16",
-        "symfony/yaml": "6.1.*"
+  "type": "project",
+  "license": "proprietary",
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "require": {
+    "php": ">=8.1",
+    "ext-ctype": "*",
+    "ext-iconv": "*",
+    "beberlei/assert": "^3.3",
+    "doctrine/doctrine-bundle": "^2.7",
+    "doctrine/doctrine-migrations-bundle": "^3.2",
+    "doctrine/orm": "^2.13",
+    "ramsey/uuid": "^4.5",
+    "ramsey/uuid-doctrine": "^1.8",
+    "symfony/console": "6.1.*",
+    "symfony/dotenv": "6.1.*",
+    "symfony/flex": "^2",
+    "symfony/framework-bundle": "6.1.*",
+    "symfony/messenger": "6.1.*",
+    "symfony/proxy-manager-bridge": "6.1.*",
+    "symfony/runtime": "6.1.*",
+    "symfony/twig-bundle": "6.1.*",
+    "symfony/validator": "6.1.*",
+    "symfony/webpack-encore-bundle": "^1.16",
+    "symfony/yaml": "6.1.*"
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/package-versions-deprecated": true,
+      "symfony/flex": true,
+      "symfony/runtime": true
     },
-    "config": {
-        "allow-plugins": {
-            "composer/package-versions-deprecated": true,
-            "symfony/flex": true,
-            "symfony/runtime": true
-        },
-        "optimize-autoloader": true,
-        "preferred-install": {
-            "*": "dist"
-        },
-        "sort-packages": true,
-        "bin-dir": "bin"
+    "optimize-autoloader": true,
+    "preferred-install": {
+      "*": "dist"
     },
-    "autoload": {
-        "psr-4": {
-            "SwResearch\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "SwResearch\\Tests\\": "tests/"
-        }
-    },
-    "replace": {
-        "symfony/polyfill-ctype": "*",
-        "symfony/polyfill-iconv": "*",
-        "symfony/polyfill-php72": "*",
-        "symfony/polyfill-php73": "*",
-        "symfony/polyfill-php74": "*",
-        "symfony/polyfill-php80": "*",
-        "symfony/polyfill-php81": "*"
-    },
-    "scripts": {
-        "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
-        },
-        "post-install-cmd": [
-            "@auto-scripts"
-        ],
-        "post-update-cmd": [
-            "@auto-scripts"
-        ],
-        "project:reset": [
-            "@dependencies:dev:install",
-            "@build:dev:ui",
-            "@cache:dev:clear",
-            "@cache:test:clear",
-            "@database:dev:reset"
-        ],
-        "php:cs": [
-            "bin/php-cs-fixer fix -v --show-progress dots --config='.php-cs-fixer.dist.php' --using-cache=no src",
-            "bin/php-cs-fixer fix -v --show-progress dots --config='.php-cs-fixer.dist.php' --using-cache=no migrations",
-            "bin/php-cs-fixer fix -v --show-progress dots --config='.php-cs-fixer.dist.php' --using-cache=no tests"
-        ],
-        "php:quality": [
-            "@tests:php:stan",
-            "@tests:php:psalm"
-        ],
-        "tests:php:psalm": [
-            "bin/psalm --long-progress --config='psalm.xml'"
-        ],
-        "tests:php:psalm:security": [
-            "bin/psalm --taint-analysis --long-progress --config='psalm.xml'"
-        ],
-        "tests:php:stan": [
-            "bin/phpstan analyse -c phpstan.neon"
-        ],
-        "tests": [
-            "@logs:php:purge",
-            "@cache:test:clear",
-            "@tests:php:unit",
-            "@tests:php:cs",
-            "@yarn:eslint"
-        ],
-        "dependencies:dev:install": [
-            "@composer:dev:install",
-            "@yarn:dev:install"
-        ],
-        "composer:dev:install": [
-            "composer install --no-interaction --optimize-autoloader"
-        ],
-        "yarn:dev:install": [
-            "yarn install"
-        ],
-        "yarn:eslint": [
-            "yarn eslint:dry"
-        ],
-        "build:dev:ui": [
-            "yarn build:dev"
-        ],
-        "build:prod:ui": [
-            "yarn build:prod"
-        ],
-        "build:ui": [
-            "yarn build:prod"
-        ],
-        "cache:dev:clear": [
-            "bin/console cache:clear --env=dev"
-        ],
-        "cache:test:clear": [
-            "bin/console cache:clear --env=test"
-        ],
-        "database:dev:create": [
-            "bin/console doctrine:database:create -n --env=dev",
-            "bin/console doctrine:migrations:migrate -n --env=dev"
-        ],
-        "database:dev:drop": [
-            "rm -f var/todo.db"
-        ],
-        "database:dev:reset": [
-            "@database:dev:drop",
-            "@database:dev:create"
-        ],
-        "logs:php:purge": [
-            "rm -f var/logs/*.log"
-        ],
-        "tests:php:unit": [
-            "bin/phpunit --testsuite unit --verbose --no-coverage --no-logging"
-        ],
-        "tests:php:cs": [
-            "bin/php-cs-fixer fix -v --dry-run --show-progress dots --using-cache=no --config='.php-cs-fixer.dist.php'",
-            "@tests:php:stan",
-            "@tests:php:psalm",
-            "@tests:php:psalm:security"
-        ]
-    },
-    "conflict": {
-        "symfony/symfony": "*"
-    },
-    "extra": {
-        "symfony": {
-            "allow-contrib": false,
-            "require": "6.1.*",
-            "docker": false
-        }
-    },
-    "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.12",
-        "phpstan/phpstan": "^1.8",
-        "phpunit/phpunit": "^9",
-        "symfony/maker-bundle": "^1.47",
-        "vimeo/psalm": "^4.29"
+    "sort-packages": true,
+    "bin-dir": "bin"
+  },
+  "autoload": {
+    "psr-4": {
+      "SwResearch\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "SwResearch\\Tests\\": "tests/"
+    }
+  },
+  "replace": {
+    "symfony/polyfill-ctype": "*",
+    "symfony/polyfill-iconv": "*",
+    "symfony/polyfill-php72": "*",
+    "symfony/polyfill-php73": "*",
+    "symfony/polyfill-php74": "*",
+    "symfony/polyfill-php80": "*",
+    "symfony/polyfill-php81": "*"
+  },
+  "scripts": {
+    "auto-scripts": {
+      "cache:clear": "symfony-cmd",
+      "assets:install %PUBLIC_DIR%": "symfony-cmd"
+    },
+    "post-install-cmd": [
+      "@auto-scripts"
+    ],
+    "post-update-cmd": [
+      "@auto-scripts"
+    ],
+    "project:reset": [
+      "@dependencies:dev:install",
+      "@build:dev:ui",
+      "@cache:dev:clear",
+      "@cache:test:clear",
+      "@database:dev:reset"
+    ],
+    "php:cs": [
+      "bin/php-cs-fixer fix -v --show-progress dots --config='.php-cs-fixer.dist.php' --using-cache=no src",
+      "bin/php-cs-fixer fix -v --show-progress dots --config='.php-cs-fixer.dist.php' --using-cache=no migrations",
+      "bin/php-cs-fixer fix -v --show-progress dots --config='.php-cs-fixer.dist.php' --using-cache=no tests"
+    ],
+    "php:quality": [
+      "@tests:php:stan",
+      "@tests:php:psalm"
+    ],
+    "tests:php:psalm": [
+      "bin/psalm --long-progress --config='psalm.xml'"
+    ],
+    "tests:php:psalm:security": [
+      "bin/psalm --taint-analysis --long-progress --config='psalm.xml'"
+    ],
+    "tests:php:stan": [
+      "bin/phpstan analyse -c phpstan.neon"
+    ],
+    "tests": [
+      "@logs:php:purge",
+      "@cache:test:clear",
+      "@tests:php:unit",
+      "@tests:php:cs",
+      "@yarn:eslint"
+    ],
+    "dependencies:dev:install": [
+      "@composer:dev:install",
+      "@yarn:dev:install"
+    ],
+    "composer:dev:install": [
+      "composer install --no-interaction --optimize-autoloader"
+    ],
+    "yarn:dev:install": [
+      "yarn install"
+    ],
+    "yarn:eslint": [
+      "yarn eslint:dry"
+    ],
+    "yarn:prettier": [
+      "yarn prettier:check"
+    ],
+    "build:dev:ui": [
+      "yarn build:dev"
+    ],
+    "build:prod:ui": [
+      "yarn build:prod"
+    ],
+    "build:ui": [
+      "yarn build:prod"
+    ],
+    "cache:dev:clear": [
+      "bin/console cache:clear --env=dev"
+    ],
+    "cache:test:clear": [
+      "bin/console cache:clear --env=test"
+    ],
+    "database:dev:create": [
+      "bin/console doctrine:database:create -n --env=dev",
+      "bin/console doctrine:migrations:migrate -n --env=dev"
+    ],
+    "database:dev:drop": [
+      "rm -f var/todo.db"
+    ],
+    "database:dev:reset": [
+      "@database:dev:drop",
+      "@database:dev:create"
+    ],
+    "logs:php:purge": [
+      "rm -f var/logs/*.log"
+    ],
+    "tests:php:unit": [
+      "bin/phpunit --testsuite unit --verbose --no-coverage --no-logging"
+    ],
+    "tests:php:cs": [
+      "bin/php-cs-fixer fix -v --dry-run --show-progress dots --using-cache=no --config='.php-cs-fixer.dist.php'",
+      "@tests:php:stan",
+      "@tests:php:psalm",
+      "@tests:php:psalm:security"
+    ]
+  },
+  "conflict": {
+    "symfony/symfony": "*"
+  },
+  "extra": {
+    "symfony": {
+      "allow-contrib": false,
+      "require": "6.1.*",
+      "docker": false
+    }
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.12",
+    "phpstan/phpstan": "^1.8",
+    "phpunit/phpunit": "^9",
+    "symfony/maker-bundle": "^1.47",
+    "vimeo/psalm": "^4.29"
+  }
 }

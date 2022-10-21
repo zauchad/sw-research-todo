@@ -1,3 +1,9 @@
-controllers:
-    resource: ../src/UserInterface/Controller/
-    type: annotation
+todo_controller:
+  resource: ../src/UserInterface/Controller/TodoController.php
+  type: annotation
+
+rest_controller:
+  resource: ../src/UserInterface/Controller/RestController.php
+  type: annotation
+  prefix: '/api'
+  name_prefix: 'api_'
